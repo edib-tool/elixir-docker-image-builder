@@ -1,11 +1,11 @@
 
-# Elixir Docker Image Packager (EDIP)
+# Elixir Docker Image Builder (EDIB)
 
 Attempt to create the possibly smallest Docker image for an Elixir release.
 
 ----
 
-Use it in your Elixir project with [mix-edip](https://github.com/asaaki/mix-edip),
+Use it in your Elixir project with [mix-edib](https://github.com/edib-tool/mix-edib),
 a mix task to easily package your release image.
 
 _(Note: This repo is for documentation only.)_
@@ -25,12 +25,12 @@ _(Note: This repo is for documentation only.)_
 - [Showdown](#showdown)
 - [Prerequisites](#prerequisites)
 - [Usage](#usage)
-  - [Project dependency](#project-dependency)
   - [Mix archive installation](#mix-archive-installation)
+  - [Project dependency](#project-dependency)
   - [Without any mix task (CI environment)](#without-any-mix-task-ci-environment)
   - [Test](#test)
 - [How it works](#how-it-works)
-  - [Step 0: Downloading the EDIP tool](#step-0-downloading-the-edip-tool)
+  - [Step 0: Downloading the EDIB tool](#step-0-downloading-the-edib-tool)
   - [Step 1: Creating the artifact (tarball archive)](#step-1-creating-the-artifact-tarball-archive)
   - [Step 2: Creating the final docker image](#step-2-creating-the-final-docker-image)
 - [Caveats](#caveats)
@@ -45,19 +45,35 @@ _(Note: This repo is for documentation only.)_
 
 ## Showdown
 
-![Showdown (shell output of EDIP packaging)](showdown.png)
+![Showdown (shell output of EDIB packaging)](showdown.png)
 
 ## Prerequisites
 
-Next to your Elixir application you need _docker_ and most likely _mix-edip_.
+Next to your Elixir application you need _docker_ and most likely _mix-edib_.
 Also do not forget to add _exrm_ as a dependency in your project.
 
 ## Usage
 
-Either add [`mix-edip`](https://github.com/asaaki/mix-edip) as a dependency in your Elixir project or
-install the mix archive.
+Either install the mix archive or
+add [`mix-edib`](https://github.com/edib-tool/mix-edib) as a dependency in your Elixir project.
 
 In both cases you definitely need to add `exrm` as a project dependency!
+
+### Mix archive installation
+
+```shell
+mix archive.install http://git.io/edib-0.5.0.ez
+```
+
+Do not forget to add `exrm` to your project (in mix.exs):
+
+```elixir
+defp deps do
+  [
+    {:exrm, "~> 0.19"}
+  ]
+end
+```
 
 ### Project dependency
 
@@ -66,8 +82,8 @@ In mix.exs:
 ```elixir
 defp deps do
   [
-    {:exrm, "~> 0.18"},
-    {:edip, "~> 0.3"}
+    {:exrm, "~> 0.19"},
+    {:edib, "~> 0.5"}
   ]
 end
 ```
@@ -75,28 +91,12 @@ end
 Then run:
 
 ```shell
-mix deps.get edip && mix deps.compile edip
-```
-
-### Mix archive installation
-
-```shell
-mix archive.install http://git.io/edip-0.3.0.ez
-```
-
-Do not forget to add `exrm` to your project (in mix.exs):
-
-```elixir
-defp deps do
-  [
-    {:exrm, "~> 0.18"}
-  ]
-end
+mix deps.get edib && mix deps.compile edib
 ```
 
 ### Without any mix task (CI environment)
 
-If you want to keep your CI build setup clean, you do not neccessarily have to install Elixir and _mix-edip_ at all.
+If you want to keep your CI build setup clean, you do not neccessarily have to install Elixir and _mix-edib_ at all.
 
 The docker commands are pretty simple.
 The information for application/release name and version might be less trivial.
@@ -108,7 +108,7 @@ The information for application/release name and version might be less trivial.
 docker run --rm \
   -v /path/to/my_awesome_app:/source \
   -v /path/to/my_awesome_app/tarballs:/stage/tarballs \
-  asaaki/edip-tool:0.3.0
+  edib/edib-tool:1.0
 ```
 
 **image creation:**
@@ -141,16 +141,16 @@ If everything went well, your release should be up and running now.
 The whole build/packaging process happens in a Docker container.
 Therefore the only system dependency next to Elixir (for running the mix task) is _docker_ itself.
 
-(If you plan to use EDIP tool in a CI environment you can manually trigger the artifact and image creation,
+(If you plan to use EDIB tool in a CI environment you can manually trigger the artifact and image creation,
 then no Elixir in the host environment of the CI build is needed.)
 
-### Step 0: Downloading the EDIP tool
+### Step 0: Downloading the EDIB tool
 
 This is just a docker image.
 
-The setup of it can be found at [asaaki/docker-images: dockerfiles/edip-tool/0.3.0](https://github.com/asaaki/docker-images/tree/master/dockerfiles/edip-tool/0.3.0).
+The setup of it can be found at [edib-tool/docker-edib-tool](https://github.com/edib-tool/docker-edib-tool).
 
-At Docker Hub: <https://hub.docker.com/r/asaaki/edip-tool/>
+At Docker Hub: <https://hub.docker.com/r/edib/edib-tool/>
 
 Because nesting of docker containers can be sometimes quite cumbersome, we split the packaging into two steps, so we can
 stay on the host were the docker daemon is running.
@@ -231,4 +231,4 @@ goal.
 
 ### Is it free?
 
-_[Of course it is!](./LICENSE)_
+_[Of course it is!](https://github.com/edib-tool/mix-edib/blob/master/LICENSE)_
