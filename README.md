@@ -50,19 +50,19 @@ _(Note: This repo is for documentation only.)_
 ## Prerequisites
 
 Next to your Elixir application you need _docker_ and most likely _mix-edib_.
-Also do not forget to add _exrm_ as a dependency in your project.
+Also do not forget to add _distillery_ as a dependency in your project.
 
 ## Usage
 
 Either install the mix archive or
 add [`mix-edib`](https://github.com/edib-tool/mix-edib) as a dependency in your Elixir project.
 
-In both cases you definitely need to add `exrm` as a project dependency!
+In both cases you definitely need to add `distillery` as a project dependency!
 
 ### Mix archive installation
 
 ```shell
-mix archive.install http://git.io/edib-0.5.0.ez
+mix archive.install http://git.io/edib-0.9.0.ez
 ```
 
 Do not forget to add `exrm` to your project (in mix.exs):
@@ -70,7 +70,7 @@ Do not forget to add `exrm` to your project (in mix.exs):
 ```elixir
 defp deps do
   [
-    {:exrm, "~> 0.19"}
+    {:distillery, "~> 0.10"},
   ]
 end
 ```
@@ -82,8 +82,8 @@ In mix.exs:
 ```elixir
 defp deps do
   [
-    {:exrm, "~> 0.19"},
-    {:edib, "~> 0.5"}
+    {:distillery, "~> 0.10"},
+    {:edib, "~> 0.9"}
   ]
 end
 ```
