@@ -65,7 +65,7 @@ In both cases you definitely need to add `distillery` as a project dependency!
 mix archive.install http://git.io/edib-0.9.0.ez
 ```
 
-Do not forget to add `exrm` to your project (in mix.exs):
+Do not forget to add `distillery` to your project (in mix.exs):
 
 ```elixir
 defp deps do
